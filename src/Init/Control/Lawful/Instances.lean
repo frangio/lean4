@@ -308,6 +308,10 @@ namespace ReaderT
 
 @[simp, grind =] theorem run_read [Monad m] (ctx : ρ) : (ReaderT.read : ReaderT ρ m ρ).run ctx = pure ctx := rfl
 
+@[simp] theorem run_MonadReader_read [Monad m] (ctx : ρ) : (MonadReader.read : ReaderT ρ m ρ).run ctx = pure ctx := rfl
+
+@[simp] theorem run_withReader [Monad m] (x : ReaderT ρ m α) (ctx : ρ): (withReader f x).run ctx = x.run (f ctx) := rfl
+
 @[simp] theorem run_seq {α β : Type u} [Monad m] (f : ReaderT ρ m (α → β)) (x : ReaderT ρ m α) (ctx : ρ)
     : (f <*> x).run ctx = (f.run ctx <*> x.run ctx) := rfl
 
