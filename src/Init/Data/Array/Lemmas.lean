@@ -3076,7 +3076,8 @@ theorem foldlM_append [Monad m] [LawfulMonad m] {f : β → α → m β} {b} {xs
     {stop} (w : stop = xs.size + 1) :
     (xs.push a).foldlM f b 0 stop = xs.foldlM f b >>= fun b => f b a := by
   subst w
-  simp [← append_singleton]
+  rcases xs with ⟨xs⟩
+  simp
 
 theorem foldlM_push [Monad m] [LawfulMonad m] {xs : Array α} {a : α} {f : β → α → m β} {b} :
     (xs.push a).foldlM f b = xs.foldlM f b >>= fun b => f b a := by

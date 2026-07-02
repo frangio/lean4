@@ -221,9 +221,12 @@ theorem forM_toArray [Monad m] (l : List α) (f : α → m PUnit) :
   apply ext'
   simp
 
-@[simp] theorem push_append_toArray {as : Array α} {a : α} {bs : List α} : as.push a ++ bs.toArray = as ++ (a :: bs).toArray := by
+theorem push_append_toArray {as : Array α} {a : α} {bs : List α} : as.push a ++ bs.toArray = as ++ (a :: bs).toArray := by
   cases as
   simp
+
+@[simp] theorem append_toArray_cons {as : Array α} {a : α} {bs : List α} : as ++ (a :: bs).toArray = as.push a ++ bs.toArray :=
+  push_append_toArray.symm
 
 @[simp, grind =] theorem findSomeM?_toArray [Monad m] [LawfulMonad m] (f : α → m (Option β)) (l : List α) :
     l.toArray.findSomeM? f = l.findSomeM? f := by
@@ -443,7 +446,7 @@ theorem zipWithMAux_toArray_zero {m : Type u → Type v} [Monad m] [LawfulMonad 
   | [], _ => simp
   | _, [] => simp
   | a :: as, b :: bs =>
-    simp [zipWithMAux_toArray_succ', zipWithMAux_toArray_zero, push_append_toArray]
+    simp [zipWithMAux_toArray_succ', zipWithMAux_toArray_zero]
 
 @[simp, grind =] theorem zipWith_toArray (as : List α) (bs : List β) (f : α → β → γ) :
     Array.zipWith f as.toArray bs.toArray = (List.zipWith f as bs).toArray := by

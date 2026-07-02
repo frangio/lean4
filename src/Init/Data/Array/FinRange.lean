@@ -7,6 +7,7 @@ module
 
 prelude
 public import Init.Data.Array.Basic
+import Init.Data.Array.Bootstrap
 import Init.Data.Array.Lemmas
 import Init.Data.Array.OfFn
 import Init.Data.Fin.Lemmas

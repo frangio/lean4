@@ -202,7 +202,8 @@ theorem mapFinIdx_append {xs ys : Array α} {f : (i : Nat) → α → (h : i < (
 theorem mapFinIdx_push {xs : Array α} {a : α} {f : (i : Nat) → α → (h : i < (xs.push a).size) → β} :
     mapFinIdx (xs.push a) f =
       (mapFinIdx xs (fun i a h => f i a (by simp; omega))).push (f xs.size a (by simp)) := by
-  simp [← append_singleton, mapFinIdx_append]
+  cases xs
+  simp [List.mapFinIdx_concat, Array.size]
 
 theorem mapFinIdx_singleton {a : α} {f : (i : Nat) → α → (h : i < 1) → β} :
     #[a].mapFinIdx f = #[f 0 a (by simp)] := by
@@ -332,7 +333,8 @@ theorem mapIdx_append {xs ys : Array α} :
 @[simp, grind =]
 theorem mapIdx_push {xs : Array α} {a : α} :
     mapIdx f (xs.push a) = (mapIdx f xs).push (f xs.size a) := by
-  simp [← append_singleton, mapIdx_append]
+  rcases xs with ⟨xs⟩
+  simp [List.mapIdx_concat]
 
 theorem mapIdx_singleton {a : α} : mapIdx f #[a] = #[f 0 a] := by
   simp
